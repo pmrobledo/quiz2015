@@ -22,17 +22,33 @@ var sequelize = new Sequelize(DB_name, user, pwd, {dialect: protocol,
   }
 );
 //Importar la definicion de la tabla Quiz en quiz.js
-var Quiz = sequelize.import(path.join(__dirname, 'quiz'));
+var quiz_path = path.join(__dirname, 'quiz');
+var Quiz = sequelize.import(quiz_path);
 exports.Quiz = Quiz; //Exportar definicion de tabla Quiz
-// sequelize.sync() crea la tabla de preguntas en DB
-sequelize.sync().success(function(){
-// Success(..) ejecuta el manejador una vez creada la tabla
-Quiz.count().success(function(count){
-  if(count===0){   // tbla se inicializa solo si esta vacia
-  Quiz.create({pregunta: 'Capital de Italia',
-               respuesta: 'Roma'
+// sequelize.sync() inicializa tabla de preguntsa en DB
+sequelize.sync().then(function(){
+  //then(..) ejecuta el manejador una vez creada la tabla
+  Quiz.count().then(function(count){
+    if(count===0){  // La tabla se inicializa solo si esta vacia
+  Quiz.create({ pregunta: 'Capital de Italia',
+       respuesta: 'Roma'
+  });
+  Quiz.create({ pregunta: 'Capital de Portugal',
+       respuesta: 'Lisboa'
 })
-.success(function(){console.log('Base de datos inicializada')});
+  .then(function(){console.log('Base de datos inicializada')});
   };
 });
 });
+// modelo inicial
+// sequelize.sync() crea la tabla de preguntas en DB
+//sequelize.sync().success(function(){
+// Success(..) ejecuta el manejador una vez creada la tabla
+//Quiz.count().success(function(count){
+//  if(count===0){   // tbla se inicializa solo si esta vacia
+//  Quiz.create({pregunta: 'Capital de Italia',
+//})
+//.success(function(){console.log('Base de datos inicializada')});
+//  };
+//});
+//});
