@@ -1,13 +1,21 @@
+* { margin: 0; padding: 0;}
+body { font: 16px Georgia, serif;}
 
-*		{ margin: 0; padding: 0;}
-body		{ font: 16px Georgia, serif; }
-#page-wrap	{ margin: 2% auto; color: white; }
-#page-wrap > .main	{ border: 1px solid #999; padding: 1%;
-			  margin-bottom: 1px; color: black;}
+#page-wrap { margin: 2% auto; color: #FFF; background-color: #000;}
+#page-wrap > .main {
+	border: 1px solid #999;
+	padding: 1%;
+	margin-bottom: 1px;
+	color: #000;
+}
 
-section > div	{ padding: 20px; }
-header, nav, section	{ background: #eee; text-align: center; }
+section > div { padding: 20px; }
+header, nav, section, footer { background-color: #EEE; text-align: center; }
+nav span { margin: 0px 10px 0px 0px; }
+footer > a { margin-right: 10px; }
+table { margin-left: auto; margin-right: auto; }
+form#searchForm { padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid black; }
 
-footer		{ background: #eee; text-align: center;}
-nav span	{ margin: 0px 10px 0px 0px;}
-#ErrorMsgs      { color: #f61; font-size: smaller}
+/* Author */
+img.author { width: 120px; vertical-align: middle; border: 0px solid black; }
+span.authorName { font-weight: bold; margin-left: 5px; }
