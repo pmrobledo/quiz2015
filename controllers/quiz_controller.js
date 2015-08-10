@@ -5,12 +5,14 @@ var models = require('../models/models.js');
 
 // autoload
 exports.load = function(req,res,next,quizId){
-    models.Quiz.find(quizId).then(function(quiz){
+    models.Quiz.find({
+      where: { id: Number(quizId)},
+      include: [{ model: models.Comment}]
+    }).then(function(quiz){
         if(quiz){
             req.quiz = quiz;
             next();
-        }else{
-            next(new Error("No existe el quizId=" + quizId));
+        }else {next(new Error("No existe el quizId=" + quizId));
         }
     }).catch(function(error){next(error);});
 }
@@ -22,13 +24,12 @@ exports.show = function (req, res) {
 
 // GEt quizes/:id/answer
 exports.answer = function (req, res) {
-        if (req.query.respuesta.toLowerCase() === req.quiz.respuesta) {
+        if (req.query.respuesta.toLowerCase() === req.quiz.respuesta.toLowerCase() ) {
                 res.render("quizes/answer", { respuesta: "correcto", quiz: req.quiz, errors: [] });
             } else {
                 res.render("quizes/answer", { respuesta: "incorrecto", quiz: req.quiz, errors: []  });
             }
-
-}
+};
 
 // GET quizes
 exports.index = function (req, res) {
@@ -80,6 +81,7 @@ exports.edit = function(req,res){
 exports.update = function(req,res){
     req.quiz.pregunta = req.body.quiz.pregunta;
     req.quiz.respuesta = req.body.quiz.respuesta;
+    req.quiz.tema = req.body.quiz.tema;
 
     req.quiz.validate().then(function(err){
         if(err){

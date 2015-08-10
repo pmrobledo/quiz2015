@@ -9,24 +9,38 @@ var partials = require('express-partials');
 var routes = require('./routes/index');
 
 var methodOverride = require('method-override');
+var session = require('express-session');
 // var users = require('./routes/users'); esta fue retirada
 
 var app = express();
 
-app.use(partials());
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
+app.use(partials());
 // uncomment after placing your favicon in /public
+// app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser('Quiz 2015'));
+app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Helpers dinamicos:
+app.use(function(req, res, next) {
+  // gusrdar path en session.redir para despues de login
+  if(!req.path.match(/\/login|\/logout/)) {
+    req.session.redir = req.path;
+  }
+  // Hacer visible req.session el las vistas
+  res.locals.session = req.session;
+  next();
+});
 
 app.use('/', routes);
 //app.use('/users', users); esta fue retirada
