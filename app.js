@@ -41,6 +41,16 @@ app.use(function(req, res, next) {
   res.locals.session = req.session;
   next();
 });
+app.use(function(req, res, next) {
+    if (req.session.user) {
+        if (Date.now() - req.session.user.lastRequestTime > 120000) {
+            delete req.session.user;
+        } else {
+            req.session.user.lastRequestTime = Date.now();
+        }
+    }
+    next();
+});
 
 app.use('/', routes);
 //app.use('/users', users); esta fue retirada

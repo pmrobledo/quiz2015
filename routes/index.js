@@ -5,6 +5,7 @@ var quizController = require("../controllers/quiz_controller");
 var commentController = require('../controllers/comment_controller');
 var sessionController = require('../controllers/session_controller');
 var userController = require('../controllers/user_controller');
+var statisticsController = require('../controllers/statistics_controller');
 /* Pagina de entrada */
 router.get('/', function(req, res) {
   res.render('index', { title: 'Quiz', errors: [] });
@@ -12,6 +13,7 @@ router.get('/', function(req, res) {
 
 // autoload de comandos con :quizId
 router.param("quizId", quizController.load); // autoload :quizId
+router.param('commentId', commentController.load); // autoload :commentId)
 
 // Definicion de rutas de session
 router.get('/login', sessionController.new);        // formulario login
@@ -38,8 +40,13 @@ router.delete('/quizes/:quizId(\\d+)',   sessionController.loginRequired, quizCo
 // comments
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments',    commentController.create);
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish',
+                                                 sessionController.loginRequired, commentController.publish);
 
-/* creditos*/
+//Definición de rutas para estadísticas
+router.get('/statistics', statisticsController.calculate, statisticsController.show);
+
+/* Autor*/
 router.get('/author',                      quizController.author);
 
 module.exports = router;
